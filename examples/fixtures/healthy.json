@@ -1,0 +1,134 @@
+{
+  "_comment": "A region that passes: one multi-AZ Redis group with failover, both encryption flags, an auth token and a week of snapshots.",
+  "region": "eu-central-1",
+  "describe_replication_groups": [
+    {
+      "ReplicationGroups": [
+        {
+          "ReplicationGroupId": "prod-sessions",
+          "Description": "session store",
+          "Status": "available",
+          "Engine": "redis",
+          "CacheNodeType": "cache.r7g.large",
+          "AutomaticFailover": "enabled",
+          "MultiAZ": "enabled",
+          "ClusterEnabled": false,
+          "TransitEncryptionEnabled": true,
+          "AtRestEncryptionEnabled": true,
+          "AuthTokenEnabled": true,
+          "AutoMinorVersionUpgrade": true,
+          "SnapshotRetentionLimit": 7,
+          "SnapshotWindow": "02:00-03:00",
+          "MemberClusters": [
+            "prod-sessions-001",
+            "prod-sessions-002",
+            "prod-sessions-003"
+          ],
+          "NodeGroups": [
+            {
+              "NodeGroupId": "0001",
+              "Status": "available",
+              "NodeGroupMembers": [
+                {
+                  "CacheClusterId": "prod-sessions-001",
+                  "CacheNodeId": "0001",
+                  "PreferredAvailabilityZone": "eu-central-1a",
+                  "CurrentRole": "primary"
+                },
+                {
+                  "CacheClusterId": "prod-sessions-002",
+                  "CacheNodeId": "0001",
+                  "PreferredAvailabilityZone": "eu-central-1b",
+                  "CurrentRole": "replica"
+                },
+                {
+                  "CacheClusterId": "prod-sessions-003",
+                  "CacheNodeId": "0001",
+                  "PreferredAvailabilityZone": "eu-central-1c",
+                  "CurrentRole": "replica"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "describe_cache_clusters": [
+    {
+      "CacheClusters": [
+        {
+          "CacheClusterId": "prod-sessions-001",
+          "Engine": "redis",
+          "EngineVersion": "7.1.0",
+          "CacheClusterStatus": "available",
+          "CacheNodeType": "cache.r7g.large",
+          "NumCacheNodes": 1,
+          "PreferredAvailabilityZone": "eu-central-1a",
+          "ReplicationGroupId": "prod-sessions",
+          "AutoMinorVersionUpgrade": true,
+          "SnapshotRetentionLimit": 7,
+          "TransitEncryptionEnabled": true,
+          "AtRestEncryptionEnabled": true,
+          "AuthTokenEnabled": true
+        },
+        {
+          "CacheClusterId": "prod-sessions-002",
+          "Engine": "redis",
+          "EngineVersion": "7.1.0",
+          "CacheClusterStatus": "available",
+          "CacheNodeType": "cache.r7g.large",
+          "NumCacheNodes": 1,
+          "PreferredAvailabilityZone": "eu-central-1b",
+          "ReplicationGroupId": "prod-sessions",
+          "AutoMinorVersionUpgrade": true,
+          "SnapshotRetentionLimit": 7,
+          "TransitEncryptionEnabled": true,
+          "AtRestEncryptionEnabled": true,
+          "AuthTokenEnabled": true
+        },
+        {
+          "CacheClusterId": "prod-sessions-003",
+          "Engine": "redis",
+          "EngineVersion": "7.1.0",
+          "CacheClusterStatus": "available",
+          "CacheNodeType": "cache.r7g.large",
+          "NumCacheNodes": 1,
+          "PreferredAvailabilityZone": "eu-central-1c",
+          "ReplicationGroupId": "prod-sessions",
+          "AutoMinorVersionUpgrade": true,
+          "SnapshotRetentionLimit": 7,
+          "TransitEncryptionEnabled": true,
+          "AtRestEncryptionEnabled": true,
+          "AuthTokenEnabled": true
+        }
+      ]
+    }
+  ],
+  "describe_cache_engine_versions": [
+    {
+      "CacheEngineVersions": [
+        {
+          "Engine": "redis",
+          "EngineVersion": "6.2",
+          "CacheParameterGroupFamily": "redis6.x"
+        },
+        {
+          "Engine": "redis",
+          "EngineVersion": "7.0",
+          "CacheParameterGroupFamily": "redis7"
+        },
+        {
+          "Engine": "redis",
+          "EngineVersion": "7.1",
+          "CacheParameterGroupFamily": "redis7"
+        },
+        {
+          "Engine": "memcached",
+          "EngineVersion": "1.6.17",
+          "CacheParameterGroupFamily": "memcached1.6"
+        }
+      ]
+    }
+  ]
+}

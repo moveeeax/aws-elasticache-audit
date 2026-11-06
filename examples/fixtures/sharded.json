@@ -1,0 +1,121 @@
+{
+  "_comment": "A cluster-mode group with three shards and no replica in any of them: one finding with three members, not three scattered lines.",
+  "region": "us-east-1",
+  "describe_replication_groups": [
+    {
+      "ReplicationGroups": [
+        {
+          "ReplicationGroupId": "catalog-shards",
+          "Description": "sharded catalog cache",
+          "Status": "available",
+          "Engine": "redis",
+          "CacheNodeType": "cache.r7g.xlarge",
+          "AutomaticFailover": "disabled",
+          "MultiAZ": "disabled",
+          "ClusterEnabled": true,
+          "TransitEncryptionEnabled": true,
+          "AtRestEncryptionEnabled": true,
+          "AuthTokenEnabled": true,
+          "AutoMinorVersionUpgrade": true,
+          "SnapshotRetentionLimit": 3,
+          "MemberClusters": [
+            "catalog-shards-0001-001",
+            "catalog-shards-0002-001",
+            "catalog-shards-0003-001"
+          ],
+          "NodeGroups": [
+            {
+              "NodeGroupId": "0001",
+              "Status": "available",
+              "NodeGroupMembers": [
+                {
+                  "CacheClusterId": "catalog-shards-0001-001",
+                  "CacheNodeId": "0001",
+                  "PreferredAvailabilityZone": "us-east-1a",
+                  "CurrentRole": "primary"
+                }
+              ]
+            },
+            {
+              "NodeGroupId": "0002",
+              "Status": "available",
+              "NodeGroupMembers": [
+                {
+                  "CacheClusterId": "catalog-shards-0002-001",
+                  "CacheNodeId": "0001",
+                  "PreferredAvailabilityZone": "us-east-1b",
+                  "CurrentRole": "primary"
+                }
+              ]
+            },
+            {
+              "NodeGroupId": "0003",
+              "Status": "available",
+              "NodeGroupMembers": [
+                {
+                  "CacheClusterId": "catalog-shards-0003-001",
+                  "CacheNodeId": "0001",
+                  "PreferredAvailabilityZone": "us-east-1c",
+                  "CurrentRole": "primary"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "describe_cache_clusters": [
+    {
+      "CacheClusters": [
+        {
+          "CacheClusterId": "catalog-shards-0001-001",
+          "Engine": "redis",
+          "EngineVersion": "7.1.0",
+          "CacheClusterStatus": "available",
+          "CacheNodeType": "cache.r7g.xlarge",
+          "NumCacheNodes": 1,
+          "PreferredAvailabilityZone": "us-east-1a",
+          "ReplicationGroupId": "catalog-shards",
+          "AutoMinorVersionUpgrade": true,
+          "SnapshotRetentionLimit": 3
+        },
+        {
+          "CacheClusterId": "catalog-shards-0002-001",
+          "Engine": "redis",
+          "EngineVersion": "7.1.0",
+          "CacheClusterStatus": "available",
+          "CacheNodeType": "cache.r7g.xlarge",
+          "NumCacheNodes": 1,
+          "PreferredAvailabilityZone": "us-east-1b",
+          "ReplicationGroupId": "catalog-shards",
+          "AutoMinorVersionUpgrade": true,
+          "SnapshotRetentionLimit": 3
+        },
+        {
+          "CacheClusterId": "catalog-shards-0003-001",
+          "Engine": "redis",
+          "EngineVersion": "7.1.0",
+          "CacheClusterStatus": "available",
+          "CacheNodeType": "cache.r7g.xlarge",
+          "NumCacheNodes": 1,
+          "PreferredAvailabilityZone": "us-east-1c",
+          "ReplicationGroupId": "catalog-shards",
+          "AutoMinorVersionUpgrade": true,
+          "SnapshotRetentionLimit": 3
+        }
+      ]
+    }
+  ],
+  "describe_cache_engine_versions": [
+    {
+      "CacheEngineVersions": [
+        {
+          "Engine": "redis",
+          "EngineVersion": "7.1",
+          "CacheParameterGroupFamily": "redis7"
+        }
+      ]
+    }
+  ]
+}

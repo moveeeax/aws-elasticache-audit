@@ -1,0 +1,185 @@
+{
+  "_comment": "The interesting region: a single-node group with everything off, a group pinned to an end-of-support engine, a memcached cluster and a standalone Redis node.",
+  "region": "eu-central-1",
+  "describe_replication_groups": [
+    {
+      "ReplicationGroups": [
+        {
+          "ReplicationGroupId": "prod-sessions-single",
+          "Description": "session store, never got a replica",
+          "Status": "available",
+          "Engine": "redis",
+          "CacheNodeType": "cache.t4g.micro",
+          "AutomaticFailover": "disabled",
+          "MultiAZ": "disabled",
+          "ClusterEnabled": false,
+          "TransitEncryptionEnabled": false,
+          "AtRestEncryptionEnabled": false,
+          "AuthTokenEnabled": false,
+          "AutoMinorVersionUpgrade": false,
+          "SnapshotRetentionLimit": 0,
+          "MemberClusters": ["prod-sessions-single-001"],
+          "NodeGroups": [
+            {
+              "NodeGroupId": "0001",
+              "Status": "available",
+              "NodeGroupMembers": [
+                {
+                  "CacheClusterId": "prod-sessions-single-001",
+                  "CacheNodeId": "0001",
+                  "PreferredAvailabilityZone": "eu-central-1a",
+                  "CurrentRole": "primary"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ReplicationGroupId": "legacy-cart",
+          "Description": "cart cache from the 2019 stack",
+          "Status": "available",
+          "Engine": "redis",
+          "CacheNodeType": "cache.m5.large",
+          "AutomaticFailover": "disabled",
+          "MultiAZ": "disabled",
+          "ClusterEnabled": false,
+          "TransitEncryptionEnabled": true,
+          "AtRestEncryptionEnabled": true,
+          "AuthTokenEnabled": true,
+          "AutoMinorVersionUpgrade": true,
+          "SnapshotRetentionLimit": 5,
+          "MemberClusters": ["legacy-cart-001", "legacy-cart-002"],
+          "NodeGroups": [
+            {
+              "NodeGroupId": "0001",
+              "Status": "available",
+              "NodeGroupMembers": [
+                {
+                  "CacheClusterId": "legacy-cart-001",
+                  "CacheNodeId": "0001",
+                  "PreferredAvailabilityZone": "eu-central-1a",
+                  "CurrentRole": "primary"
+                },
+                {
+                  "CacheClusterId": "legacy-cart-002",
+                  "CacheNodeId": "0001",
+                  "PreferredAvailabilityZone": "eu-central-1a",
+                  "CurrentRole": "replica"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "describe_cache_clusters": [
+    {
+      "CacheClusters": [
+        {
+          "CacheClusterId": "prod-sessions-single-001",
+          "Engine": "redis",
+          "EngineVersion": "7.1.0",
+          "CacheClusterStatus": "available",
+          "CacheNodeType": "cache.t4g.micro",
+          "NumCacheNodes": 1,
+          "PreferredAvailabilityZone": "eu-central-1a",
+          "ReplicationGroupId": "prod-sessions-single",
+          "AutoMinorVersionUpgrade": false,
+          "SnapshotRetentionLimit": 0
+        },
+        {
+          "CacheClusterId": "legacy-cart-001",
+          "Engine": "redis",
+          "EngineVersion": "5.0.6",
+          "CacheClusterStatus": "available",
+          "CacheNodeType": "cache.m5.large",
+          "NumCacheNodes": 1,
+          "PreferredAvailabilityZone": "eu-central-1a",
+          "ReplicationGroupId": "legacy-cart",
+          "AutoMinorVersionUpgrade": true,
+          "SnapshotRetentionLimit": 5
+        },
+        {
+          "CacheClusterId": "legacy-cart-002",
+          "Engine": "redis",
+          "EngineVersion": "5.0.6",
+          "CacheClusterStatus": "available",
+          "CacheNodeType": "cache.m5.large",
+          "NumCacheNodes": 1,
+          "PreferredAvailabilityZone": "eu-central-1a",
+          "ReplicationGroupId": "legacy-cart",
+          "AutoMinorVersionUpgrade": true,
+          "SnapshotRetentionLimit": 5
+        },
+        {
+          "CacheClusterId": "page-fragments",
+          "Engine": "memcached",
+          "EngineVersion": "1.6.17",
+          "CacheClusterStatus": "available",
+          "CacheNodeType": "cache.m7g.large",
+          "NumCacheNodes": 2,
+          "PreferredAvailabilityZone": "Multiple",
+          "AutoMinorVersionUpgrade": true,
+          "SnapshotRetentionLimit": 0,
+          "CacheNodes": [
+            {
+              "CacheNodeId": "0001",
+              "CacheNodeStatus": "available",
+              "CustomerAvailabilityZone": "eu-central-1a"
+            },
+            {
+              "CacheNodeId": "0002",
+              "CacheNodeStatus": "available",
+              "CustomerAvailabilityZone": "eu-central-1b"
+            }
+          ]
+        },
+        {
+          "CacheClusterId": "adhoc-redis",
+          "Engine": "redis",
+          "EngineVersion": "7.1.0",
+          "CacheClusterStatus": "available",
+          "CacheNodeType": "cache.t4g.small",
+          "NumCacheNodes": 1,
+          "PreferredAvailabilityZone": "eu-central-1b",
+          "AutoMinorVersionUpgrade": true,
+          "SnapshotRetentionLimit": 0,
+          "CacheNodes": [
+            {
+              "CacheNodeId": "0001",
+              "CacheNodeStatus": "available",
+              "CustomerAvailabilityZone": "eu-central-1b"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "describe_cache_engine_versions": [
+    {
+      "CacheEngineVersions": [
+        {
+          "Engine": "redis",
+          "EngineVersion": "6.2",
+          "CacheParameterGroupFamily": "redis6.x"
+        },
+        {
+          "Engine": "redis",
+          "EngineVersion": "7.0",
+          "CacheParameterGroupFamily": "redis7"
+        },
+        {
+          "Engine": "redis",
+          "EngineVersion": "7.1",
+          "CacheParameterGroupFamily": "redis7"
+        },
+        {
+          "Engine": "memcached",
+          "EngineVersion": "1.6.17",
+          "CacheParameterGroupFamily": "memcached1.6"
+        }
+      ]
+    }
+  ]
+}
